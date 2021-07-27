@@ -41,7 +41,7 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.send(users))
     .catch(next);
 };
 
@@ -51,7 +51,7 @@ module.exports.getUser = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError("Пользователь с таким ID не найден");
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === "CastError") {
         throw new BadRequestError("Неизвестный идентификатор");
@@ -126,7 +126,7 @@ module.exports.getProfileMe = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError("Пользователь не найден");
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
         throw new BadRequestError("Переданы некорректные данные");
