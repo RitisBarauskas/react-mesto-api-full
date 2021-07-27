@@ -3,7 +3,7 @@ const { errors } = require("celebrate");
 
 const { PORT = 3000 } = process.env;
 const mongoose = require("mongoose");
-
+const cors = require('cors');
 const users = require("./routes/users");
 const cards = require("./routes/cards");
 const { login, createUser } = require("./controllers/users");
@@ -12,7 +12,6 @@ const { validationSignIn, validationSignUp } = require("./utils/validations");
 const { handleError } = require("./middlewares/handleError");
 const { notFoundPage } = require("./middlewares/notFoundPage");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
-const { defaultCors } = require("./middlewares/cors");
 
 const app = express();
 
@@ -22,11 +21,10 @@ mongoose.connect("mongodb://localhost:27017/mestodb", {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-
+app.use(cors());
 app.use(express.json());
 
 app.use(requestLogger);
-app.use(defaultCors);
 app.post("/signin", validationSignIn, login);
 app.post("/signup", validationSignUp, createUser);
 
