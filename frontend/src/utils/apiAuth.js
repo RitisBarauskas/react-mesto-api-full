@@ -43,7 +43,7 @@ class Auth {
 }
 
 const apiAuth = new Auth ({
-    url: 'https://api.mesto.website',
+    url: 'https://api.mesto.website/',
     headers: {
         "content-type": "application/json"
     }
