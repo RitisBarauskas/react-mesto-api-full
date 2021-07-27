@@ -43,7 +43,7 @@ class Auth {
 }
 
 const apiAuth = new Auth ({
-    url: 'https://auth.nomoreparties.co/',
+    url: 'https://api.mesto.website',
     headers: {
         "content-type": "application/json"
     }
