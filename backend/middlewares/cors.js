@@ -2,6 +2,10 @@ const allowedCors = [
   "https://praktikum.tk",
   "http://praktikum.tk",
   "localhost:3000",
+  "https://mesto.website",
+  "http://mesto.website",
+  "https://mesto.website",
+  "84.201.167.129"
 ];
 
 const defaultCors = (req, res, next) => {
