@@ -46,7 +46,7 @@ const Register = ({handleSignUp}) => {
                 <input
                     className="sign__button"
                     type="submit"
-                    value="Войти"
+                    value="Зарегистрироваться"
                 />
                 <p className="sign__text">Уже зарегистрированы? <NavLink className="sign__link" to="/sign-in">Войти</NavLink></p>
             </form>
