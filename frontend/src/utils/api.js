@@ -55,7 +55,6 @@ class Api {
     }
 
     getUserInfo(jwt) {
-        console.log(`token: ${jwt}`);
         return fetch(this._url+`users/me`, {
             method: 'GET',
             headers: {

@@ -34,19 +34,36 @@ function App() {
 
     const history = useHistory();
 
+    const tokenCheck = () => {
+        const jwt = localStorage.getItem('jwt');
+        if (jwt) {
+            apiAuth.getUser(jwt)
+                .then((res) => {
+                    if (res) {
+                        setUserEmail(res.email);
+                        setLoggedIn(true);
+                        history.push('/');
+                    }
+                })
+                .catch(err => console.log(err));
+            return jwt;
+        }
+    }
+
     useEffect(() => {
         const token = tokenCheck();
         if (token) {
             api.getInitialData(token).then(([cards, userData]) => {
-                console.log(cards);
                 setCards(cards);
                 setCurrentUser(userData);
             }).catch((err) => console.log(err));
         }
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         tokenCheck();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -58,12 +75,8 @@ function App() {
     const handleCardLike = (card) => {
         const token = tokenCheck();
         const isLiked = card.likes.some(i => i._id === currentUser._id);
-        console.log('old card');
-        console.log(card);
         api.changeLikeCardStatus(card._id, !isLiked, token)
             .then((newCard) => {
-                console.log('new card');
-                console.log(newCard);
                 setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
             })
             .catch((err) => console.log(err));
@@ -144,22 +157,6 @@ function App() {
             })
             .catch((err) => console.log(err))
             .finally(() => setLoading(false));
-    }
-
-    const tokenCheck = () => {
-        const jwt = localStorage.getItem('jwt');
-        if (jwt) {
-            apiAuth.getUser(jwt)
-                .then((res) => {
-                    if (res) {
-                        setUserEmail(res.email);
-                        setLoggedIn(true);
-                        history.push('/');
-                    }
-                })
-                .catch(err => console.log(err));
-            return jwt;
-        }
     }
 
     const handleSignIn = (data) => {

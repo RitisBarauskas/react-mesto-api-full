@@ -43,7 +43,6 @@ function EditAvatarPopup({isOpen, onClose, onUpdateAvatar, isLoading}) {
                     id="link-input"
                     type="url"
                     name="linkAvatar"
-                    defaultValue=""
                     placeholder="Ссылка на аватар"
                     required
                     value={avatarLink || ''}
