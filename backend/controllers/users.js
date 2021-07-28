@@ -71,7 +71,7 @@ module.exports.updateUser = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError("Пользователь с таким ID не найден");
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
         throw new BadRequestError("Переданы некорректные данные");
@@ -87,7 +87,7 @@ module.exports.updateAvatar = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError("Пользователь с таким ID не найден");
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
         throw new BadRequestError("Переданы некорректные данные");
