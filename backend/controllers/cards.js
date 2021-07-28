@@ -38,7 +38,7 @@ module.exports.deleteCard = (req, res, next) => {
         .orFail(() => {
           throw new NotFoundError("Отсутствует удаляемая карточка");
         })
-        .then((card) => res.send({ card }))
+        .then((card) => res.send(card))
         .catch((err) => {
           if (err.name === "ValidationError" || err.name === "CastError") {
             throw new BadRequestError("Переданы некорректные данные");
@@ -59,7 +59,7 @@ module.exports.likeCard = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError("Отсутствует лайкаемая карточка");
     })
-    .then((card) => res.send({ card }))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
         throw new BadRequestError("Переданы некорректные данные");
