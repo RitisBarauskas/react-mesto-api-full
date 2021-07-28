@@ -31,15 +31,17 @@ function App() {
     const [cards, setCards] = useState([]);
     const [isLoading, setLoading] = useState(false);
     const [cardDelete, setCardDelete] = useState({});
-    const [token, setToken] = React.useState('')
 
     const history = useHistory();
 
     useEffect(() => {
-        api.getInitialData(token).then(([cards, userData]) => {
-            setCards(cards);
-            setCurrentUser(userData);
-        }).catch((err) => console.log(err));
+        const token = tokenCheck();
+        if (token) {
+            api.getInitialData(token).then(([cards, userData]) => {
+                setCards(cards);
+                setCurrentUser(userData);
+            }).catch((err) => console.log(err));
+        }
     }, [])
 
     useEffect(() => {
@@ -53,6 +55,7 @@ function App() {
     }, [history, loggedIn]);
 
     const handleCardLike = (card) => {
+        const token = tokenCheck();
         const isLiked = card.likes.some(i => i._id === currentUser._id);
         api.changeLikeCardStatus(card._id, !isLiked, token)
             .then((newCard) => {
@@ -65,6 +68,7 @@ function App() {
         setCardDelete(card);
     }
     const handleCardDelete = (card) => {
+        const token = tokenCheck();
         setLoading(true)
         api.deleteCard(card._id, token)
             .then(() => {
@@ -102,6 +106,7 @@ function App() {
     }
 
     const handleUpdateUser = (data) => {
+        const token = tokenCheck();
         setLoading(true)
         api.editProfile(data, token)
             .then((res) => {
@@ -113,6 +118,7 @@ function App() {
     }
 
     const handleUpdateAvatar = (data) => {
+        const token = tokenCheck();
         setLoading(true);
         api.udateAvatar(data, token)
             .then((res) => {
@@ -124,6 +130,7 @@ function App() {
     }
 
     const handleAddPlaceSubmit = (data) => {
+        const token = tokenCheck();
         setLoading(true)
         api.addCard(data, token)
             .then((newCard) => {
@@ -136,17 +143,17 @@ function App() {
 
     const tokenCheck = () => {
         const jwt = localStorage.getItem('jwt');
-        setToken(jwt);
         if (jwt) {
             apiAuth.getUser(jwt)
                 .then((res) => {
                     if (res) {
-                        setUserEmail(res.data.email);
+                        setUserEmail(res.email);
                         setLoggedIn(true);
                         history.push('/');
                     }
                 })
                 .catch(err => console.log(err));
+            return jwt;
         }
     }
 

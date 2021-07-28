@@ -17,6 +17,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.getAllCards = (req, res, next) => {
   Card.find({})
+    .populate("owner")
     .then((cards) => res.send(cards))
     .catch(next);
 };
@@ -25,6 +26,7 @@ module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
   Card.findById(cardId)
+    .populate("owner")
     .then((card) => {
       if (!card) {
         throw new NotFoundError("Отсутствует удаляемая карточка");
@@ -53,6 +55,7 @@ module.exports.likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
+    .populate("owner")
     .orFail(() => {
       throw new NotFoundError("Отсутствует лайкаемая карточка");
     })
@@ -71,6 +74,7 @@ module.exports.dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true }
   )
+    .populate("owner")
     .orFail(() => {
       throw new NotFoundError("Отсутствует дизлайкаемая карточка");
     })

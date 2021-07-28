@@ -44,7 +44,7 @@ class Api {
         else {
             this._methodCard = 'DELETE'
         }
-        return fetch(this._url+`cards/likes/${id}`, {
+        return fetch(this._url+`cards/${id}/likes`, {
             method: this._methodCard,
             headers: {
                 "content-type": "application/json",
@@ -55,6 +55,7 @@ class Api {
     }
 
     getUserInfo(jwt) {
+        console.log(`token: ${jwt}`);
         return fetch(this._url+`users/me`, {
             method: 'GET',
             headers: {
