@@ -8,7 +8,7 @@ module.exports.createCard = (req, res, next) => {
   Card.create({ name, link, owner })
     .then((card) => {
       return Card.findById(card._id)
-        .populate("owner")
+        .populate(["owner", "likes"])
         .then((card) => res.send(card))
         .catch((err) => {
           if (err.name === "ValidationError" || err.name === "CastError") {
@@ -22,7 +22,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.getAllCards = (req, res, next) => {
   Card.find({})
-    .populate("owner")
+    .populate(["owner", "likes"])
     .then((cards) => res.send(cards))
     .catch(next);
 };
@@ -31,12 +31,12 @@ module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   const userId = req.user._id;
   Card.findById(cardId)
-    .populate("owner")
+    .populate(["owner", "likes"])
     .then((card) => {
       if (!card) {
         throw new NotFoundError("Отсутствует удаляемая карточка");
       }
-      if (userId !== String(card.owner)) {
+      if (userId !== String(card.owner._id)) {
         throw new ForbiddenError("Нельзя удалять чужие карточки");
       }
       return Card.findByIdAndRemove(cardId)
@@ -60,7 +60,7 @@ module.exports.likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
-    .populate("owner")
+    .populate(["owner", "likes"])
     .orFail(() => {
       throw new NotFoundError("Отсутствует лайкаемая карточка");
     })
@@ -79,7 +79,7 @@ module.exports.dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true }
   )
-    .populate("owner")
+    .populate(["owner", "likes"])
     .orFail(() => {
       throw new NotFoundError("Отсутствует дизлайкаемая карточка");
     })
