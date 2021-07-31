@@ -74,6 +74,7 @@ module.exports.updateUser = (req, res, next) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
         throw new BadRequestError("Переданы некорректные данные");
       }
+      throw new NotFoundError(err.message);
     })
     .catch(next);
 };
@@ -90,6 +91,7 @@ module.exports.updateAvatar = (req, res, next) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
         throw new BadRequestError("Переданы некорректные данные");
       }
+      throw new NotFoundError(err.message);
     })
     .catch(next);
 };
@@ -129,6 +131,7 @@ module.exports.getProfileMe = (req, res, next) => {
       if (err.name === "ValidationError" || err.name === "CastError") {
         throw new BadRequestError("Переданы некорректные данные");
       }
+      throw new NotFoundError(err.message);
     })
     .catch(next);
 };
