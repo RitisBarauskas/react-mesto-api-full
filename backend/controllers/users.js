@@ -53,7 +53,7 @@ module.exports.getUser = (req, res, next) => {
     })
     .then((user) => res.send(user))
     .catch((err) => {
-        throw new NotFoundError(err.message);
+      throw new NotFoundError(err.message);
     })
     .catch(next);
 };
