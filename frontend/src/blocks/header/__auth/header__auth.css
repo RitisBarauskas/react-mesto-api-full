@@ -8,3 +8,11 @@
     display: flex;
     align-items: center;
 }
+
+@media screen and (max-width: 700px) {
+    .header__auth {
+        font-size: 14px;
+        line-height: 18px;
+        flex-direction: column;
+    }
+}

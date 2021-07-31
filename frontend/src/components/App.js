@@ -72,6 +72,18 @@ function App() {
         }
     }, [history, loggedIn]);
 
+    useEffect(() => {
+        const handleEscClose = (evt) => {
+            if (evt.key === 'Escape') {
+                closeAllPopups();
+            }
+        }
+        document.addEventListener('keydown', handleEscClose);
+        return () => {
+            document.removeEventListener('keydown', handleEscClose)
+        }
+    })
+
     const handleCardLike = (card) => {
         const token = tokenCheck();
         const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -152,7 +164,7 @@ function App() {
         setLoading(true)
         api.addCard(data, token)
             .then((newCard) => {
-                setCards([newCard, ...cards]);
+                setCards([...cards, newCard]);
                 closeAllPopups();
             })
             .catch((err) => console.log(err))
