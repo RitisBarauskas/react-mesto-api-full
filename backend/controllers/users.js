@@ -51,7 +51,12 @@ module.exports.getUser = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError("Пользователь с таким ID не найден");
     })
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("Пользователь с таким ID не найден");
+      }
+      res.send(user);
+    })
     .catch((err) => {
       if (err.name === "CastError") {
         throw new BadRequestError("Неизвестный идентификатор");

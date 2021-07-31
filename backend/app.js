@@ -3,7 +3,7 @@ const { errors } = require("celebrate");
 
 const { PORT = 3000 } = process.env;
 const mongoose = require("mongoose");
-const cors = require('cors');
+const cors = require("cors");
 const users = require("./routes/users");
 const cards = require("./routes/cards");
 const { login, createUser } = require("./controllers/users");
@@ -25,9 +25,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use(requestLogger);
-app.get('/crash-test', () => {
+app.get("/crash-test", () => {
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    throw new Error("Сервер сейчас упадёт");
   }, 0);
 });
 app.post("/signin", validationSignIn, login);
